@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block content %}
+    <form id="formFirst" method="post" xmlns="http://www.w3.org/1999/html">
+    <fieldset class="form-group h-100">
+        {% from "_formhelpers.html" import render_field %}
+        <div class="form-row align-items-center">
+          <div class="col">
+              <b>City:</b>
+                {{ render_field(formFirst.city) }}
+          </div>
+          <div class="col">
+              <b>Land:</b>
+                {{ render_field(formFirst.land) }}
+          </div>
+            <div class="col-3">
+            <button class="btn btn-info mt-3 pt-2 pb-2" form="formFirst" type="submit" name="firstSubmit">Submit</button>
+          </div>
+        </div>
+    </fieldset>
+    </form>
+    {% if first_frame != False %}
+    <p>Visualizing of intermediate results:</p>
+    <table class="table-sm table-bordered">
+        <tr>
+            {% for col in nearest_cols %}
+            <th>{{col}}</th>
+            {% endfor %}
+        </tr>
+        {% for row in nearest_rows %}
+        <tr>
+            {% for col, row_ in zip(nearest_cols, row) %}
+            <td>{{row_}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    {% endif %}
+    <fieldset class="form-group h-100">
+        <form id="formSec" method="post" xmlns="http://www.w3.org/1999/html">
+        {% from "_formhelpers.html" import render_field %}
+            <div class="form-row align-items-center">
+              <div class="col-3">
+                  <b>Station ID:</b>
+                    {{ render_field(formSec.stationId) }}
+              </div>
+              <div class="col-3">
+                  <b>Start Date:</b>
+                  {% if formSec.start.errors %}
+                    {{ formSec.start(class="form-control form-control-lg is-invalid datepicker", type="date") }}
+                    <div class="invalid-feedback">
+                        {% for error in formSec.start.errors%}
+                            <p> {{ error }} </p>
+                        {% endfor %}
+                    </div>
+                  {% else %}
+                    {{ formSec.start(class="form-control form-control-lg datepicker", type="date") }}
+                  {% endif %}
+              </div>
+              <div class="col-3">
+                  <b>End Date:</b>
+                  {% if formSec.end.errors %}
+                    {{ formSec.end(class="form-control form-control-lg is-invalid datepicker", type="date") }}
+                    <div class="invalid-feedback">
+                        {% for error in formSec.end.errors%}
+                            <p> {{ error }} </p>
+                        {% endfor %}
+                    </div>
+                  {% else %}
+                    {{ formSec.end(class="form-control form-control-lg datepicker", type="date") }}
+                  {% endif %}
+              </div>
+              <div class="col-1">
+                <button class="btn btn-info mt-4 pt-2 pb-2" form="formSec" type="submit" name="SecSubmit" style="align-items: center;">Submit</button>
+              </div>
+            </div>
+        </form>
+    </fieldset>
+    <div class="row">
+        <form id="formThird" method="post" xmlns="http://www.w3.org/1999/html">
+            <button
+            {% if first_array != [] and sec_array != [] %}
+                class="btn btn-info ml-2 mt-4 pt-2 pb-2 ml-3 "
+            {% else %}
+                class="btn btn-info ml-2 mt-4 pt-2 pb-2 ml-3 disable" disabled
+            {% endif %}
+            form="formThird" type="submit" name="ThirdSubmit" style="float: right;">Export to Excel</button>
+        </form>
+    </div>
+    <br>
+    {% if sec_frame != False %}
+    <p>Visualizing of intermediate results:</p>
+    <table class="table-sm table-bordered">
+        <tr>
+            {% for col in temp_cols %}
+            <th>{{col}}</th>
+            {% endfor %}
+        </tr>
+        {% for row in temp_rows %}
+        <tr>
+            {% for col, row_ in zip(temp_cols, row) %}
+            <td>{{row_}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    {% endif %}
+{% endblock %}

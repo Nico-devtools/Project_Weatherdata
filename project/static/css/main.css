@@ -1,0 +1,49 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: absolute;
+  top: 10%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1em;
+}
+
+.table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+h1 {
+	font-size: 4vh;
+	text-align: center;
+}
+
+h2 {
+	font-size: 2vh;
+}
+
+h3 {
+	font-size: 3vh;
+}
+
+.navbar {
+  height: 10%;
+}
+
+#nav-bar
+{
+  position: : sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar {
+  background-image: linear-gradient(to right, #f8f9fa, #f8f9fa);
+  padding: 10 !important;
+}
+
+
