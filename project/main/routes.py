@@ -142,6 +142,7 @@ def home():
             temp_cols = result_statistics.columns.values
             temp_rows = list(result_statistics.values.tolist())
             sec_frame = True
+            result_single = data_temp
 
         if 'ThirdSubmit' in request.form:
         ##### Alternative, damit alte Excel nicht überschrieben wird
