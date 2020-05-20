@@ -154,9 +154,9 @@ def home():
                 else:
                     print("Successfully created the directory weatherdata")
             time = str(strftime("%Y%m%d-%H%M%S"))
-            result_single.to_excel(os.path.join(folder, time + '_df_hourly_weatherdata_' + v_city + '.xlsx'))
+            data_temp.to_excel(os.path.join(folder, time + '_df_hourly_weatherdata_' + v_city + '.xlsx'))
         # deine ursprüngliche Lösung, liegt dann automatisch im Projekt-Ordner, wo auch die run.py liegt
-            result_single.to_excel('df_hourly_weatherdata_selected_city.xlsx')
+            data_temp.to_excel('df_hourly_weatherdata_selected_city.xlsx')
         ### optional: wenn Excel erzeugt wurde, alle Daten zurück setzen (also Tabellen und Felder)?
             # first_frame = False
             # sec_frame = False
