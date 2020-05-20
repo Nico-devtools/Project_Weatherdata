@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os, datetime
 from flask import render_template, request, Blueprint, url_for, flash, redirect, session
+from flask import send_file, send_from_directory, safe_join, abort
 from project.main.forms import FirstForm, SecondForm
 from project.main.utils import get_daily_weatherdata, get_hourly_weatherdata, get_nearest_weatherstation
 import pandas as pd
@@ -9,6 +10,7 @@ import numpy as np
 from time import strftime
 from opencage.geocoder import OpenCageGeocode
 from opencage.geocoder import RateLimitExceededError
+import tempfile
 
 # Ordnerstruktur für Pfadangaben
 main_dir = os.path.abspath(os.path.dirname(__file__))
@@ -145,18 +147,14 @@ def home():
         ##### Alternative, damit alte Excel nicht überschrieben wird
             # Datei würde ich eher nicht direkt in derm Directory der App speichern,
             # sondern bspw. auf dem Display, einfach
-            folder = os.path.join(desktop_dir, "weatherdata")
-            if os.path.exists(folder) is not True:
-                try:
-                    os.mkdir(folder)
-                except OSError:
-                    print("Creation of the directory weatherdata failed")
-                else:
-                    print("Successfully created the directory weatherdata")
-            time = str(strftime("%Y%m%d-%H%M%S"))
-            result_single.to_excel(os.path.join(folder, time + '_df_hourly_weatherdata_' + v_city + '.xlsx'))
+            with tempfile.TemporaryDirectory() as folder:
+                time = str(strftime("%Y%m%d-%H%M%S"))
+                generated_file_name = time + '_df_hourly_weatherdata_' + v_city + '.xlsx'
+                generated_file_path = os.path.join(folder, generated_file_name)
+                result_single.to_excel(generated_file_path)
+                return send_from_directory(folder, filename=generated_file_name, as_attachment=True)
         # deine ursprüngliche Lösung, liegt dann automatisch im Projekt-Ordner, wo auch die run.py liegt
-            result_single.to_excel('df_hourly_weatherdata_selected_city.xlsx')
+        # result_single.to_excel('df_hourly_weatherdata_selected_city.xlsx')
         ### optional: wenn Excel erzeugt wurde, alle Daten zurück setzen (also Tabellen und Felder)?
             # first_frame = False
             # sec_frame = False
